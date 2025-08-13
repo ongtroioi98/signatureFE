@@ -76,7 +76,7 @@ export function renderStatus(value: StatusValue) {
   return <Tag color={statusMap[value]?.color}>{statusMap[value]?.label}</Tag>;
 }
 function renderDateTime(value: number) {
-  return dayjs(value).format("MM/DD/YYYY hh:mm");
+  return value ? dayjs(value).format("MM/DD/YYYY hh:mm") : "";
 }
 const dataSource: DataType[] = [
   {
@@ -360,7 +360,7 @@ function SignatureTable() {
 
       <Table
         offsetBottom={130}
-        dataSource={data?.rows || []}
+        dataSource={data || []}
         columns={columns}
         loading={isLoading}
         actions={actions}

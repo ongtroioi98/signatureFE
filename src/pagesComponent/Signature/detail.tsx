@@ -11,6 +11,7 @@ import {
   Flex,
   Divider,
   Tag,
+  Spin,
 } from "antd";
 import { InboxOutlined, UserOutlined } from "@ant-design/icons";
 import { API_STORAGE } from "@/apiUrls/storage";
@@ -75,10 +76,12 @@ export default function ApplicationDetail({ row, onClose }) {
     mutationFn: () =>
       postAPI(API_SIGNATURE.APPROVE_SIGNATURE(row.applicationId), {}),
     onSuccess: () => {
+      debugger;
       showSuccess("Approve request successfully");
       onClose(true);
     },
-    onError: () => {
+    onError: (e) => {
+      debugger;
       showError("Failed to send request");
     },
   });
@@ -93,22 +96,32 @@ export default function ApplicationDetail({ row, onClose }) {
       showError("Failed to send request");
     },
   });
-
-  const {
-    data: compareData,
-    isLoading: compareLoading,
-    isError: isCompareError,
-    error: compareError,
-    refetch: callCompare,
-  } = useQuery({
-    queryKey: ["signaturecompare"], // cache key
-    queryFn: () =>
+  const compareRequest = useMutation({
+    mutationFn: () =>
       postAPI(API_SIGNATURE.COMPARE_SIGNATURE, {
         applicationId: row.applicationId,
       }),
-    staleTime: 1000 * 60, // dữ liệu cache 1 phút
-    enabled: false,
+    onSuccess: () => {},
+    onError: () => {
+      showError("Compare signatures error");
+    },
   });
+
+  // const {
+  //   data: compareData,
+  //   isLoading: compareLoading,
+  //   isError: isCompareError,
+  //   error: compareError,
+  //   refetch: callCompare,
+  // } = useQuery({
+  //   queryKey: ["signaturecompare"], // cache key
+  //   queryFn: () =>
+  //     postAPI(API_SIGNATURE.COMPARE_SIGNATURE, {
+  //       applicationId: row.applicationId,
+  //     }),
+  //   staleTime: 1000 * 60, // dữ liệu cache 1 phút
+  //   enabled: false,
+  // });
   const handleUpload = async (file: File) => {
     if (!validateFile(file)) return Upload.LIST_IGNORE;
 
@@ -138,14 +151,6 @@ export default function ApplicationDetail({ row, onClose }) {
     // refetch();
     requestApproval.mutate();
   };
-  // useEffect(() => {
-  //   if (data) {
-  //     debugger;
-  //     showSuccess("Sent Approval request successfully");
-  //     onClose(true);
-  //   }
-  // }, [data]);
-
   const renderScore = (score: number) => {
     let color = "green";
     if (score < 0.86) {
@@ -158,8 +163,9 @@ export default function ApplicationDetail({ row, onClose }) {
     );
   };
   useEffect(() => {
-    callCompare();
+    compareRequest.mutate();
   }, []);
+  console.log("compare......", compareRequest.data);
 
   return (
     <div style={{ maxWidth: 700, margin: "0 auto", padding: 16 }}>
@@ -176,7 +182,9 @@ export default function ApplicationDetail({ row, onClose }) {
           <Typography.Text>{row?.fullName}</Typography.Text>
           <Typography.Title level={5}>Created Date:</Typography.Title>
           <Typography.Text>
-            {dayjs(row?.createdDate).format("MM/DD/YYYY hh:mm")}
+            {!row?.createdDate
+              ? ""
+              : dayjs(row?.createdDate).format("MM/DD/YYYY hh:mm")}
           </Typography.Text>
           <Typography.Title level={5}>Status:</Typography.Title>
           <Typography.Text>{renderStatus(row?.status)}</Typography.Text>
@@ -187,7 +195,7 @@ export default function ApplicationDetail({ row, onClose }) {
           <Card bordered={false} style={{ height: "250px", minWidth: "50%" }}>
             <Typography.Title level={5}>Root signature</Typography.Title>
             <img
-              src={rootSignature}
+              src="/Signature.jpg"
               alt="root signature"
               style={{ maxWidth: "250px", height: "150px" }}
             />
@@ -224,8 +232,15 @@ export default function ApplicationDetail({ row, onClose }) {
           {userInfo?.userName}
         </Title>
       </div> */}
-
-      {compareData && (
+      {compareRequest.isPending && (
+        <Flex justify="center" style={{ margin: "15px 0px" }}>
+          <Typography.Text style={{ fontSize: "16px", fontWeight: 600 }}>
+            Similarity score:&nbsp;
+          </Typography.Text>{" "}
+          <Spin></Spin>
+        </Flex>
+      )}
+      {!compareRequest.isPending && compareRequest?.data && (
         <Flex
           align="baseline"
           justify="center"
@@ -234,10 +249,10 @@ export default function ApplicationDetail({ row, onClose }) {
           <Typography.Text style={{ fontSize: "16px", fontWeight: 600 }}>
             Similarity score:&nbsp;
           </Typography.Text>
-          {renderScore(compareData.score)}
+          {renderScore(compareRequest?.data?.score)}
           <Typography.Text style={{ fontSize: "16px" }}>
             &nbsp;
-            {compareData?.result === "isMatch" ? (
+            {compareRequest?.data?.result === "isMatch" ? (
               <Tag color="green">Matched</Tag>
             ) : (
               <Tag color="red">Not matched</Tag>

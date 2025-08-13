@@ -6,8 +6,8 @@ export const API_SIGNATURE = {
   REQUEST_APPROVE_SIGNATURE: (id: string) =>
     PATH + `/signatures/${id}/request-approval`,
   APPROVE_SIGNATURE: (id: string) =>
-    PATH + `/signatures/${id}/approve?action=approved`,
+    PATH + `/signatures/${id}/review?action=approved`,
   REQUEST_REJECT_SIGNATURE: (id: string) =>
-    PATH + `/signatures/${id}/approve?action=denied`,
+    PATH + `/signatures/${id}/review?action=denied`,
   COMPARE_SIGNATURE: AI_PATH + `/signature-check`,
 };
