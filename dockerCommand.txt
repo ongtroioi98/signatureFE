@@ -1,0 +1,9 @@
+
+sudo docker exec -it d2935296cb37 /bin/bash
+sudo nano /etc/onlyoffice/documentserver/local.json
+sudo service onlyoffice-documentserver restart
+sudo docker restart 74453e308944
+docker ps
+supervisorctl restart all
+sudo docker logs 46da81831d1f
+

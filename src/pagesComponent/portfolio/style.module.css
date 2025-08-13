@@ -1,0 +1,102 @@
+.aboutMeContainer{
+    max-width: 1200px;
+    width: 100%;
+    margin: auto;
+    & table td {
+      padding-top: var(--ant-margin-md);
+    }
+  
+}
+.cardList{
+  display: grid;
+  grid-template-columns: repeat(auto-fill,minmax(356px,1fr));
+  grid-gap: var(--ant-padding-md);
+  justify-content: center;
+  transition-delay: .2s;
+}
+.card{
+    justify-content: center;
+    padding: 50px 30px;
+    border-radius: 3px;
+    transition: all .4s ease;
+    border: 1px solid var(--ant-color-border-secondary);
+    background-color: var(--ant-color-bg-container);
+   & img{
+      filter: grayscale(1);
+      transition: all .4s ease;
+    }
+    & .hoverTitle{
+      font-weight:400;
+    }
+    &:hover{
+      color: var(--ant-color-link-hover);
+      .imageRoundContainer{
+        border: 1px solid var(--ant-color-link-hover);
+      }
+      & img{
+        filter: grayscale(0);
+      }
+      & .hoverTitle{
+        color:var(--ant-color-link-hover);
+      }
+    }
+}
+.blogCard{
+  padding:0px;
+  & img{
+    filter: grayscale(0);
+    transition: all .4s ease;
+  }
+}
+.cardBody{
+  padding: 12px var(--ant-padding-lg) 12px var(--ant-padding-lg);
+}
+.imageRoundContainer{
+  width: 90px;
+  height: 90px;
+  border-radius: 100%;
+  border: .5px solid var(--ant-color-border);
+  transition: all .4s ease;
+}
+
+.skillItem{
+  width: 100%;
+  position:relative;
+  height: 2px;
+  background-color: var(--ant-color-bg-container);
+  & .skillValue{
+    content:'';
+    position: absolute;
+    background-color:var(--ant-color-link-hover);
+    top:0px;
+    left:0px;
+    height: 100%;
+    border-top-right-radius: 8px;    
+  }
+}
+.ant-timeline-item-content:hover ~ .ant-timeline-item-head svg{
+  background-color:var(--ant-color-link-hover) !important;
+}
+.skilItem{
+  margin-bottom:24px;
+}
+.smallerFontSizeOnMobile.smallerFontSizeOnMobile{
+  font-size:4rem;
+}
+@media(max-width:768px){
+  .smallerFontSizeOnMobile.smallerFontSizeOnMobile{
+    font-size:2.5rem;
+  }
+  .containerMobile{
+    padding:0px 14px 14px;
+  }
+  .containerMobileBig{
+    padding:0px 24px !important;
+  }
+  .hideMobile{
+    display:none;
+  }
+  .verticalOnMobile{
+    flex-direction:column;
+  }
+}

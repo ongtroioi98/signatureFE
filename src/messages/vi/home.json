@@ -1,0 +1,6 @@
+{
+  "back-to-home": "Về trang chủ",
+  "h1": "A second page, to demonstrate routing",
+  "title": "Second page",
+  "welcome1": "Welcome to Next.js 13 <1>with the new app directory features</1> and i18next"
+}

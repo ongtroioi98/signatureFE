@@ -1,0 +1,8 @@
+{
+  "OK": "OK",
+  "cancel": "Cancel",
+  "action": {
+    "apply": "Apply",
+    "resetFilter": "Reset Filter"
+  }
+}

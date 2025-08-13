@@ -1,0 +1,58 @@
+.bg-title-container{
+    background-color: var(--ant-purple);
+}
+.aboutMe {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80px;
+    position: relative;
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+  
+  .textContainer {
+    position: relative;
+    z-index: 2;
+  }
+  
+  h2.title.title {
+    color: var(--ant-color-link);
+    font-size: 36px;
+    font-weight: 400;
+  }
+  
+  .divider {
+    width: 170px;
+    margin: 0 auto;
+    border-top: 2px solid rgba(255, 255, 255, 0.05);
+    position: relative;
+  }
+  .divider::before{
+    content: '';
+    width: 70px;
+    position: absolute;
+    left: 50%;
+    z-index: 1;
+    top: -2px;
+    height: 2px;
+    background-color: var(--ant-color-link);
+    transform: translateX(-50%);
+  }
+  
+  .backgroundText {
+    font-size: 90px;
+    font-weight: 700;
+    color: var(--ant-color-text-secondary);
+    opacity: 0.1;
+    position: absolute;
+    z-index: 1;
+    white-space: nowrap;
+    text-transform: uppercase; /* Ensures all text is uppercase */
+  }
+  @media(max-width:768px){
+    .backgroundText{
+      font-size: 50px;
+    }
+  }

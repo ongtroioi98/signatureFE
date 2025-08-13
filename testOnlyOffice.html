@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OnlyOffice Integration</title>
+</head>
+<body>
+    <h1>OnlyOffice Document Viewer</h1>
+    <iframe id="onlyoffice-frame" width="100%" height="600px" frameborder="0"></iframe>
+    <script>
+        const documentData = {
+            title: 'My Document',
+            url: 'https://dev-dreamcity-minio-api.vinhomes.vn/vpm-dev/GENERAL/Danh_Sach_Nhan_Viendbbcd90b-f12d-4f14-ad7a-1cb0a5da1ee1.xlsx?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=vpm%2F20240919%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240919T030908Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=847b8de2dc52cee74731fd455aad7b3542c7fb0a7604b9a017abd95b973de75a', // Replace with your document URL
+        };
+
+        fetch('http://localhost:5000/api/document', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ document: documentData })
+        })
+        .then(response => response.json())
+        .then(data => {
+            const iframe = document.getElementById('onlyoffice-frame');
+            iframe.src = `http://localhost//documentserver/web-apps/apps/documents/main/index.html?file=${encodeURIComponent(data.url)}&key=${data.key}`;
+        })
+        .catch(error => console.error('Error:', error));
+    </script>
+</body>
+</html>
