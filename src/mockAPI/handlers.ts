@@ -28,6 +28,7 @@ export const handlers = [
   http.post("http://localhost:3000/v1/ai/signature-check", async (req) => {
     const body = await req.request.json();
     return HttpResponse.json({
+      result:'isMatch',
       score: Math.random(),
     });
   }),

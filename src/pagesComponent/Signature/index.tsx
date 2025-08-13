@@ -390,7 +390,7 @@ function SignatureTable() {
       >
         <ApplicationDetail
           row={selectedItem}
-          onClose={(needReload:boolean) => {
+          onClose={(needReload: boolean) => {
             setSelectedItem(null);
             if (needReload) refetch();
           }}

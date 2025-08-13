@@ -10,6 +10,7 @@ import {
   Button,
   Flex,
   Divider,
+  Tag,
 } from "antd";
 import { InboxOutlined, UserOutlined } from "@ant-design/icons";
 import { API_STORAGE } from "@/apiUrls/storage";
@@ -145,11 +146,11 @@ export default function ApplicationDetail({ row, onClose }) {
   //   }
   // }, [data]);
 
-  const renderScore = (score) => {
+  const renderScore = (score: number) => {
     let color = "green";
     if (score < 0.86) {
       color = "red";
-    } else if (score > 0.86 && score < 0.95) color = "yellow";
+    } else if (score > 0.86 && score < 0.95) color = "gold";
     return (
       <Typography.Title level={3} style={{ color: color }}>
         {(score * 100)?.toFixed(1)}%
@@ -230,21 +231,23 @@ export default function ApplicationDetail({ row, onClose }) {
           justify="center"
           style={{ padding: "16px", textAlign: "center" }}
         >
-          <Typography.Text style={{ fontSize: "16px" }}>
+          <Typography.Text style={{ fontSize: "16px", fontWeight: 600 }}>
             Similarity score:&nbsp;
           </Typography.Text>
           {renderScore(compareData.score)}
           <Typography.Text style={{ fontSize: "16px" }}>
             &nbsp;
-            {" (" +
-              (compareData?.result === "isMatch" ? "Matched" : "Not matched") +
-              ")"}
+            {compareData?.result === "isMatch" ? (
+              <Tag color="green">Matched</Tag>
+            ) : (
+              <Tag color="red">Not matched</Tag>
+            )}
           </Typography.Text>
         </Flex>
       )}
-      <Divider style={{ borderColor: "#cac8c6", margin: "12px 0px" }} />
+      {/* <Divider style={{ borderColor: "#cac8c6", margin: "12px 0px" }} /> */}
       {userInfo?.roles?.includes("staff") && (
-        <Flex justify="flex-end" gap={16}>
+        <Flex justify="flex-end" gap={16} style={{ marginTop: "16px" }}>
           <Button
             type="primary"
             onClick={sendApproveRequest}
@@ -260,7 +263,7 @@ export default function ApplicationDetail({ row, onClose }) {
       )}
 
       {userInfo?.roles?.includes("manager") && (
-        <Flex justify="flex-end" gap={16}>
+        <Flex justify="flex-end" gap={16} style={{ marginTop: "16px" }}>
           <Button
             size="large"
             type="primary"
@@ -274,8 +277,8 @@ export default function ApplicationDetail({ row, onClose }) {
           </Button>
           <Button
             size="large"
-            color="danger"
-            variant="solid"
+            type="primary"
+            danger={true}
             style={{ width: 150 }}
             loading={rejectRequest.isPending}
             onClick={() => {
