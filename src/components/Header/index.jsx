@@ -126,6 +126,7 @@ export default function Header() {
           <LocaleSwitch /> */}
         </Flex>
         <Button
+        title="logout"
           className=""
           type="link"
           icon={<LogoutOutlined />}

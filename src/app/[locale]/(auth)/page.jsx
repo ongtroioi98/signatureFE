@@ -4,8 +4,10 @@ import Portfolio from "@/pagesComponent/portfolio";
 import StartUpChecker from "@/components/startupChecker";
 import { getTranslations } from "next-intl/server";
 import MainLayout from "@/components/layouts/main";
-import { Card, Flex, Typography } from "antd";
+import { Button, Card, Flex, Typography } from "antd";
 import SignatureTable from "@/pagesComponent/Signature";
+import { LeftOutlined } from "@ant-design/icons";
+import CollapseButton from "@/components/CollapseButton";
 export function generateStaticParams() {
   return [{ locale: "en" }, { locale: "vi" }];
 }
@@ -28,16 +30,13 @@ export default async function Page({ params: { locale } }) {
         <StartUpChecker />
         {/* <Portfolio /> */}
       </Flex>
-      {/* <Flex
-        vertical
-        gap={60}
-        style={{
-          backgroundColor: "var(--ant-default-bg)",
-          justifyContent: "center",
-        }}
-      > */}
       <Flex gap={16}>
-        <Card style={{ minWidth: "40%" }} bordered={false}>
+        <Card
+          id="card1"
+          style={{ minWidth: "40%", overflow: "hidden" }}
+          bordered={false}
+        >
+          {/* <CollapseButton onChange={() => {}} /> */}
           <h3>
             <b>Demonstration Flows Flow 1</b>
           </h3>
@@ -69,12 +68,10 @@ export default async function Page({ params: { locale } }) {
             the threshold, the system flags the result for further review.
           </p>
         </Card>
-        <Card bordered={false} style={{ width: "60%" }}>
+        <Card bordered={false} style={{ width: "60%" }} id="card2">
           <SignatureTable />
         </Card>
       </Flex>
-
-      {/* </Flex> */}
     </>
   );
 }

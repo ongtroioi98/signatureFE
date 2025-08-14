@@ -13,7 +13,7 @@ import {
   Typography,
 } from "antd";
 import Image from "next/image";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { Table } from "@/components/Table";
 import Filter from "./filter";
 import {
@@ -49,7 +49,7 @@ export const statusMap = {
     color: "warning",
   },
   CREATED: {
-    label: "Pending",
+    label: "Created",
     color: "warning",
   },
   SUCCESS: {
@@ -285,27 +285,53 @@ const columns: TableColumnsType<DataType> = [
 ];
 function SignatureTable() {
   type SearchProps = GetProps<typeof Input.Search>;
+  const [searchText, setSearchText] = useState("");
   const onSearch: SearchProps["onSearch"] = (value, _e, info) => {
+    let newData = data;
     console.log(info?.source, value);
-    setFilter({ ...filter, page: 1, keyword: value });
+    newData = newData.filter((item) => {
+      return (
+        item?.applicationId?.includes(value) || item?.fullName?.includes(value)
+      );
+    });
+    // setFilter({ ...filter, page: 1, keyword: value });
+    if (filter?.status) {
+      newData = newData.filter((item) => item.status === filter.status);
+    }
+    if (filter?.time && filter?.time?.length > 0) {
+      newData = newData.filter(
+        (item) =>
+          item.createdDate &&
+          dayjs(item.createdDate).isAfter(
+            filter.time[0] && dayjs(item.createdDate).isBefore(filter.time[1])
+          )
+      );
+    }
+
+    setDataLocale(newData);
+    setSearchText(value);
   };
   const [openFilter, setOpenFilter] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [filter, setFilter] = useState({});
-  const [paging, setPaging] = useState({ pageSize: 25, current: 1 });
+  const [paging, setPaging] = useState({ pageSize: 100, current: 1 });
+  const [dataLocale, setDataLocale] = useState([]);
   const { data, isLoading, isError, error, refetch } = useQuery({
-    queryKey: [JSON.stringify(filter) + JSON.stringify(paging)], // cache key
+    // queryKey: [JSON.stringify(filter) + JSON.stringify(paging)], // cache key
+    queryKey: JSON.stringify(paging), // cache key
     queryFn: async () => {
       const res = await fetchWithAuth(
         API_IAM.USER.SIGNATURES,
         {},
-        { ...filter, ...{ page: paging.current - 1, size: paging.pageSize } }
+        { page: paging.current - 1, size: paging.pageSize }
       );
       return res.json();
     },
     staleTime: 0, // dữ liệu cache 1 phút
   });
-
+  useEffect(() => {
+    setDataLocale(data);
+  }, [data]);
   const actions = {
     align: "center",
     title: "Action",
@@ -326,8 +352,33 @@ function SignatureTable() {
       );
     },
   };
-  const onFilterChange = (value: object) => {
+  const onFilterChange = (value: {
+    status: string;
+    time: null | Array<any>;
+  }) => {
+    debugger;
     setFilter(value);
+    let newData = [];
+    newData = newData.filter((item) => {
+      return (
+        item?.applicationId?.includes(searchText) ||
+        item?.fullName?.includes(searchText)
+      );
+    });
+    if (value.status) {
+      newData = data.filter((item) => item.status === value.status);
+    }
+    if (value?.time && value?.time?.length > 0) {
+      newData = newData.filter(
+        (item) =>
+          item.createdDate &&
+          dayjs(item.createdDate).isAfter(
+            value.time[0] && dayjs(item.createdDate).isBefore(value.time[1])
+          )
+      );
+    }
+    if (value.time || value.status) setDataLocale(newData);
+    else setDataLocale(data);
     setOpenFilter(false);
   };
   const onPagingChange = (value: { pageSize: number; current: number }) => {
@@ -338,13 +389,14 @@ function SignatureTable() {
   return (
     <Flex vertical>
       <Typography.Title level={4}>List Applications</Typography.Title>
-      {/* <Flex className="scroll-caculate-item" style={{ padding: "24px 16px" }}>
+      <Flex className="scroll-caculate-item" style={{ padding: "24px 16px" }}>
         <Input.Search
           placeholder="Enter text to search"
           onSearch={onSearch}
           enterButton
           size="large"
           style={{ maxWidth: "450px", margin: "auto" }}
+          allowClear
         />
         <Button
           icon={<FilterOutlined />}
@@ -356,11 +408,11 @@ function SignatureTable() {
             setOpenFilter(true);
           }}
         ></Button>
-      </Flex> */}
+      </Flex>
 
       <Table
         offsetBottom={130}
-        dataSource={data || []}
+        dataSource={dataLocale || []}
         columns={columns}
         loading={isLoading}
         actions={actions}
