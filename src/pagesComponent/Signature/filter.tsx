@@ -22,7 +22,6 @@ export default function Filter({ data, open, onSubmit, onClose }: FilterProps) {
   }, [open]);
 
   const onApplyFilter = (filterData: any) => {
-   debugger;
   };
 
   return (

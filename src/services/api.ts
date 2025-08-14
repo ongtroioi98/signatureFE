@@ -1,6 +1,6 @@
-import { Errors } from '@/services/types';
-import fetchWithAuth from '@/utils/fetchWithAuth';
-import { getCookie } from '@/utils/hepler';
+import { Errors } from "@/services/types";
+import fetchWithAuth from "@/utils/fetchWithAuth";
+import { getCookie } from "@/utils/hepler";
 export function getErrorMessage(err: Errors) {
   if (Array.isArray(err)) {
     return err[0]?.message;
@@ -13,12 +13,12 @@ export function getErrorMessage(err: Errors) {
 export async function getAPI(url: string) {
   try {
     const res = await fetchWithAuth(url, {
-      method: 'GET',
+      method: "GET",
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + getCookie('token'),
-        credentials: 'include',
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + getCookie("token"),
+        credentials: "include",
       },
     });
     if (!res.ok) {
@@ -30,17 +30,25 @@ export async function getAPI(url: string) {
     throw ex;
   }
 }
-export async function postAPI(url: string, data: object) {
+export async function postAPI(
+  url: string,
+  data: object,
+  isNotJSONResponse?: any
+) {
   try {
     const res = await fetchWithAuth(url, {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify(data),
-      credentials: 'include',
+      credentials: "include",
     });
     if (!res.ok) {
       throw await res.json();
     }
-    return res.json();
+    if (!!isNotJSONResponse) {
+      return res.text();
+    } else {
+      return res.json();
+    }
   } catch (ex) {
     console.log(ex);
     throw ex;
@@ -49,10 +57,10 @@ export async function postAPI(url: string, data: object) {
 export async function putAPI(url: string, data: object) {
   try {
     const rawResponse = fetchWithAuth(url, {
-      method: 'PUT',
+      method: "PUT",
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
     });
@@ -64,10 +72,10 @@ export async function putAPI(url: string, data: object) {
 export async function deleteAPI(url: string, data: object) {
   try {
     const rawResponse = await fetchWithAuth(url, {
-      method: 'DELETE',
+      method: "DELETE",
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
     });

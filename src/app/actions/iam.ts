@@ -13,7 +13,6 @@ import { UserServices } from '@/services/iam';
 // );
 
 async function login(prevState: any, formData: FormData) {
-  debugger;
   const schema = zfd.formData({
     username: zfd.text(z.string().min(1, 'Trường này bắt buộc nhập')),
     password: zfd.text(z.string().min(1, 'Trường này bắt buộc nhập')),

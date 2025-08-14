@@ -63,7 +63,11 @@ export default function ApplicationDetail({ row, onClose }) {
   );
   const requestApproval = useMutation({
     mutationFn: () =>
-      postAPI(API_SIGNATURE.REQUEST_APPROVE_SIGNATURE(row.applicationId), {}),
+      postAPI(
+        API_SIGNATURE.REQUEST_APPROVE_SIGNATURE(row.applicationId),
+        {},
+        true
+      ),
     onSuccess: () => {
       showSuccess("Sent Approval request successfully");
       onClose(true);
@@ -74,20 +78,22 @@ export default function ApplicationDetail({ row, onClose }) {
   });
   const approveMutation = useMutation({
     mutationFn: () =>
-      postAPI(API_SIGNATURE.APPROVE_SIGNATURE(row.applicationId), {}),
+      postAPI(API_SIGNATURE.APPROVE_SIGNATURE(row.applicationId), {}, true),
     onSuccess: () => {
-      debugger;
       showSuccess("Approve request successfully");
       onClose(true);
     },
     onError: (e) => {
-      debugger;
       showError("Failed to send request");
     },
   });
   const rejectRequest = useMutation({
     mutationFn: () =>
-      postAPI(API_SIGNATURE.REQUEST_REJECT_SIGNATURE(row.applicationId), {}),
+      postAPI(
+        API_SIGNATURE.REQUEST_REJECT_SIGNATURE(row.applicationId),
+        {},
+        true
+      ),
     onSuccess: () => {
       showSuccess("The request has been rejected");
       onClose(true);

@@ -49,7 +49,6 @@ export default function UserProfile() {
 
     try {
       const base64 = await getBase64(file);
-      debugger;
       const res = await fetchWithAuth(API_STORAGE.UPLOAD_SIGNATURE, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
