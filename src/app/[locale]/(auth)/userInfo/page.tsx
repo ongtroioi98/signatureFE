@@ -83,7 +83,7 @@ export default function UserProfile() {
           {userInfo?.userName}
         </Title>
       </div> */}
-      <Title level={4}>Upload root signature</Title>
+      <Title level={4}>Upload signature to compare</Title>
       <div style={{ marginTop: 24 }}>
         <Text strong>Signature:</Text>
         <div style={{ marginTop: 8 }}>
