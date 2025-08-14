@@ -13,7 +13,11 @@ import {
   Tag,
   Spin,
 } from "antd";
-import { InboxOutlined, UserOutlined } from "@ant-design/icons";
+import {
+  InboxOutlined,
+  IssuesCloseOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 import { API_STORAGE } from "@/apiUrls/storage";
 import fetchWithAuth from "@/utils/fetchWithAuth";
 import { getErrorMessage, postAPI } from "@/services/api";
@@ -242,6 +246,17 @@ export default function ApplicationDetail({ row, onClose }) {
             Similarity score:&nbsp;
           </Typography.Text>{" "}
           <Spin></Spin>
+        </Flex>
+      )}
+      {!compareRequest.isPending && compareRequest.isError && (
+        <Flex justify="center" style={{ margin: "15px 0px" }}>
+          <Typography.Text style={{ fontSize: "16px", fontWeight: 600 }}>
+            Similarity score:&nbsp;
+          </Typography.Text>{" "}
+          <IssuesCloseOutlined
+            style={{ color: "red" }}
+            title="There is error when compare signature"
+          />
         </Flex>
       )}
       {!compareRequest.isPending && compareRequest?.data && (
