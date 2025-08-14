@@ -303,7 +303,7 @@ function SignatureTable() {
       );
       return res.json();
     },
-    staleTime: 1000 * 60, // dữ liệu cache 1 phút
+    staleTime: 0, // dữ liệu cache 1 phút
   });
 
   const actions = {
