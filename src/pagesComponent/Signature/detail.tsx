@@ -57,7 +57,6 @@ const validateFile = (file: File) => {
 export default function ApplicationDetail({ row, onClose }) {
   const userInfo = useUserStore((state) => state.info);
   console.log("userInfo....", userInfo);
-  const rootSignature = localStorage.getItem("rootSignature");
   const [signature, setSignature] = useState<string | null>(
     userInfo?.signature
   );
@@ -170,8 +169,8 @@ export default function ApplicationDetail({ row, onClose }) {
   };
   useEffect(() => {
     compareRequest.mutate();
+    console.log("compare......", compareRequest.data);
   }, []);
-  console.log("compare......", compareRequest.data);
 
   return (
     <div style={{ maxWidth: 700, margin: "0 auto", padding: 16 }}>
@@ -197,16 +196,15 @@ export default function ApplicationDetail({ row, onClose }) {
         </div>
       </Flex>
       <Flex gap={16} align="flex-start">
-        {rootSignature && (
-          <Card bordered={false} style={{ height: "250px", minWidth: "50%" }}>
-            <Typography.Title level={5}>Root signature</Typography.Title>
-            <img
-              src="/Signature.jpg"
-              alt="root signature"
-              style={{ maxWidth: "250px", height: "150px" }}
-            />
-          </Card>
-        )}
+        <Card bordered={false} style={{ height: "250px", minWidth: "50%" }}>
+          <Typography.Title level={5}>Root signature</Typography.Title>
+          <img
+            src="/Signature.jpg"
+            alt="root signature"
+            style={{ maxWidth: "250px", height: "150px" }}
+          />
+        </Card>
+
         <Card bordered={false} style={{ height: "250px", minWidth: "50%" }}>
           <Typography.Title level={5}>Signature</Typography.Title>
           <div style={{ marginTop: 8 }}>
